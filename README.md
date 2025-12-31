@@ -1,10 +1,12 @@
 # RxFlow Intelligence Platform
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2.35-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
 [![Prisma](https://img.shields.io/badge/Prisma-5.7-2D3748)](https://www.prisma.io/)
 [![Stripe](https://img.shields.io/badge/Stripe-Integrated-635BFF)](https://stripe.com/)
+
+> **Live Demo:** Deployed on Vercel
 
 ## 🏥 AI-Powered Digital Pharmacy Platform
 
