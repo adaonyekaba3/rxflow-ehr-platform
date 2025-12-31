@@ -132,7 +132,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
-                  {session.user.organizationId ? 'My Organization' : 'Personal'}
+                  {session.user.tenantId ? 'My Organization' : 'Personal'}
                 </p>
                 <p className="text-xs text-gray-500">Starter Plan</p>
               </div>
