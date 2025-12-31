@@ -20,13 +20,23 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object
-        
+
+        // Get the latest charge to retrieve receipt URL
+        let receiptUrl: string | null = null
+        if (paymentIntent.latest_charge) {
+          const chargeId = typeof paymentIntent.latest_charge === 'string'
+            ? paymentIntent.latest_charge
+            : paymentIntent.latest_charge.id
+          const charge = await stripe.charges.retrieve(chargeId)
+          receiptUrl = charge.receipt_url
+        }
+
         // Update transaction status
         await prisma.transaction.updateMany({
           where: { stripePaymentId: paymentIntent.id },
           data: {
             paymentStatus: 'COMPLETED',
-            stripeReceiptUrl: paymentIntent.charges?.data[0]?.receipt_url,
+            stripeReceiptUrl: receiptUrl,
           },
         })
         break
