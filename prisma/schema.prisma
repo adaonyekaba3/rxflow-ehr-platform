@@ -1,0 +1,237 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Multi-tenant organization
+model Tenant {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  logo          String?
+  address       String?
+  phone         String?
+  email         String?
+  stripeCustomerId String?
+  subscriptionStatus String @default("trial")
+  subscriptionPlan   String @default("basic")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  users         User[]
+  prescriptions Prescription[]
+  priorAuths    PriorAuthorization[]
+  transactions  Transaction[]
+  patients      Patient[]
+}
+
+// User model for NextAuth
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  role          Role      @default(STAFF)
+  tenantId      String?
+  tenant        Tenant?   @relation(fields: [tenantId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Patient model
+model Patient {
+  id            String   @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String?
+  phone         String?
+  dateOfBirth   DateTime?
+  address       String?
+  insuranceId   String?
+  insurancePlan String?
+  adherenceScore Int     @default(50)
+  riskLevel     String   @default("low")
+  tenantId      String
+  tenant        Tenant   @relation(fields: [tenantId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  prescriptions Prescription[]
+  priorAuths    PriorAuthorization[]
+  transactions  Transaction[]
+}
+
+// Prescription model
+model Prescription {
+  id              String   @id @default(cuid())
+  rxNumber        String   @unique
+  medicationName  String
+  dosage          String
+  quantity        Int
+  refillsRemaining Int     @default(0)
+  status          PrescriptionStatus @default(RECEIVED)
+  price           Float
+  copay           Float?
+  insuranceCovered Float?
+  prescriber      String?
+  prescribedDate  DateTime?
+  fillDate        DateTime?
+  pickupDate      DateTime?
+  expirationDate  DateTime?
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  tenantId        String
+  tenant          Tenant   @relation(fields: [tenantId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  priorAuth       PriorAuthorization?
+  transaction     Transaction?
+}
+
+// Prior Authorization model
+model PriorAuthorization {
+  id              String   @id @default(cuid())
+  paNumber        String   @unique
+  status          PAStatus @default(PENDING)
+  payer           String
+  aiConfidenceScore Float?
+  submittedAt     DateTime @default(now())
+  decidedAt       DateTime?
+  expiresAt       DateTime?
+  denialReason    String?
+  notes           String?
+  urgency         String   @default("normal")
+  prescriptionId  String   @unique
+  prescription    Prescription @relation(fields: [prescriptionId], references: [id])
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  tenantId        String
+  tenant          Tenant   @relation(fields: [tenantId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// Transaction/Payment model for POS
+model Transaction {
+  id              String   @id @default(cuid())
+  transactionNumber String @unique
+  amount          Float
+  tax             Float    @default(0)
+  total           Float
+  paymentMethod   PaymentMethod
+  paymentStatus   PaymentStatus @default(PENDING)
+  stripePaymentId String?
+  stripeReceiptUrl String?
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  prescriptionId  String?  @unique
+  prescription    Prescription? @relation(fields: [prescriptionId], references: [id])
+  tenantId        String
+  tenant          Tenant   @relation(fields: [tenantId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  items           TransactionItem[]
+}
+
+model TransactionItem {
+  id            String   @id @default(cuid())
+  name          String
+  quantity      Int
+  unitPrice     Float
+  total         Float
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+}
+
+// Enums
+enum Role {
+  ADMIN
+  TENANT_ADMIN
+  PHARMACIST
+  TECHNICIAN
+  STAFF
+  PATIENT
+}
+
+enum PrescriptionStatus {
+  RECEIVED
+  PROCESSING
+  PRIOR_AUTH_REQUIRED
+  PRIOR_AUTH_PENDING
+  PRIOR_AUTH_APPROVED
+  PRIOR_AUTH_DENIED
+  READY
+  PICKED_UP
+  DELIVERED
+  CANCELLED
+}
+
+enum PAStatus {
+  PENDING
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  DENIED
+  APPEALED
+  EXPIRED
+}
+
+enum PaymentMethod {
+  CARD
+  CASH
+  INSURANCE
+  SPLIT
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
