@@ -261,9 +261,9 @@ This project is a portfolio demonstration. All rights reserved.
 
 ## 👩‍💻 Author
 
-**Ada Okonkwo**
-- LinkedIn: [linkedin.com/in/adaokonkwo](https://linkedin.com/in/adaokonkwo)
-- Portfolio: [adaokonkwo.dev](https://adaokonkwo.dev)
+**Adaobi Onyekaba**
+- LinkedIn: [linkedin.com/in/ada-onyekaba](https://www.linkedin.com/in/ada-onyekaba/)
+- Portfolio: [adaobiconyekaba.com](https://adaobiconyekaba.com)
 
 ---
 

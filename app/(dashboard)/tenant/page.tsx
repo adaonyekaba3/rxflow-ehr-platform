@@ -1,12 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import { 
-  Pill, Bell, Search, Menu, Home, FileText, Users, Activity, 
-  CreditCard, Settings, LogOut, ChevronRight, Clock, CheckCircle, 
-  AlertTriangle, TrendingUp, Package, Zap, BarChart3, Shield
+import Link from 'next/link'
+import {
+  Pill, CreditCard, Shield, Package, ChevronRight, Clock, CheckCircle,
+  AlertTriangle, Zap
 } from 'lucide-react'
 
 // Mock data
@@ -52,102 +50,9 @@ const getStatusIcon = (status: string) => {
 
 export default function TenantDashboard() {
   const { data: session } = useSession()
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-
-  const navigation = [
-    { name: 'Dashboard', href: '/tenant', icon: Home, current: true },
-    { name: 'Prescriptions', href: '/tenant/prescriptions', icon: Pill, current: false },
-    { name: 'Prior Auth', href: '/tenant/prior-auth', icon: FileText, current: false },
-    { name: 'Patients', href: '/tenant/patients', icon: Users, current: false },
-    { name: 'Adherence', href: '/tenant/adherence', icon: Activity, current: false },
-    { name: 'POS / Payments', href: '/pos', icon: CreditCard, current: false },
-    { name: 'Analytics', href: '/tenant/analytics', icon: BarChart3, current: false },
-    { name: 'Settings', href: '/tenant/settings', icon: Settings, current: false },
-  ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="flex items-center space-x-3 px-6 py-5 border-b border-gray-100">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center">
-              <Pill className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <span className="text-lg font-bold text-gray-900">RxFlow</span>
-              <p className="text-xs text-gray-500">Intelligence Platform</p>
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  item.current
-                    ? 'bg-primary-50 text-primary-700'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <item.icon className={`w-5 h-5 mr-3 ${item.current ? 'text-primary-600' : 'text-gray-400'}`} />
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-
-          {/* User */}
-          <div className="p-4 border-t border-gray-100">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-primary-700">
-                  {session?.user?.name?.charAt(0) || 'U'}
-                </span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">{session?.user?.name || 'User'}</p>
-                <p className="text-xs text-gray-500 truncate">{session?.user?.email || 'user@example.com'}</p>
-              </div>
-              <button className="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
-                <LogOut className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <div className="lg:pl-64">
-        {/* Header */}
-        <header className="sticky top-0 z-40 bg-white border-b border-gray-200">
-          <div className="flex items-center justify-between px-6 py-4">
-            <div className="flex items-center space-x-4">
-              <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100">
-                <Menu className="w-5 h-5" />
-              </button>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input type="text" placeholder="Search prescriptions, patients..." className="w-80 pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" />
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="relative p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
-              <Link href="/pos" className="btn-primary flex items-center">
-                <CreditCard className="w-4 h-4 mr-2" />
-                Open POS
-              </Link>
-            </div>
-          </div>
-        </header>
-
-        {/* Dashboard Content */}
-        <main className="p-6">
+    <>
           {/* Welcome */}
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Welcome back, {session?.user?.name?.split(' ')[0] || 'there'}!</h1>
@@ -240,8 +145,7 @@ export default function TenantDashboard() {
               </div>
             </div>
           </div>
-        </main>
-      </div>
-    </div>
+        </div>
+    </>
   )
 }
