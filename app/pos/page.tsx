@@ -133,7 +133,7 @@ export default function POSPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="flex items-center justify-between px-6 py-4">
@@ -142,7 +142,7 @@ export default function POSPage() {
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <CreditCard className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -153,14 +153,14 @@ export default function POSPage() {
           </div>
           <div className="flex items-center space-x-3">
             <span className="text-sm text-gray-500">Terminal #1</span>
-            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <div className="w-3 h-3 bg-teal-500 rounded-full animate-pulse"></div>
           </div>
         </div>
       </header>
 
       <div className="flex h-[calc(100vh-73px)]">
         {/* Left Panel - Product Selection */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        <div className="flex-1 p-6 overflow-y-auto bg-gray-50">
           {/* Search */}
           <div className="relative mb-6">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -169,35 +169,35 @@ export default function POSPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search prescriptions or products..."
-              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           </div>
 
           {/* Ready Prescriptions */}
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Pill className="w-5 h-5 mr-2 text-primary-500" />
+              <Pill className="w-5 h-5 mr-2 text-pink-500" />
               Ready Prescriptions
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredRx.map((rx) => (
-                <div 
-                  key={rx.id} 
+                <div
+                  key={rx.id}
                   onClick={() => addToCart(rx, 'rx')}
-                  className="bg-white p-4 rounded-xl border border-gray-200 hover:border-primary-300 hover:shadow-md cursor-pointer transition-all"
+                  className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:border-pink-300 hover:shadow-md cursor-pointer transition-all"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <p className="font-medium text-gray-900">{rx.medication}</p>
                       <p className="text-sm text-gray-500">{rx.patient}</p>
                     </div>
-                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">Ready</span>
+                    <span className="px-2 py-1 bg-teal-100 text-teal-700 text-xs rounded-full font-medium">Ready</span>
                   </div>
                   <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                     <div className="text-sm text-gray-500">
                       Qty: {rx.quantity} • Copay: ${rx.copay.toFixed(2)}
                     </div>
-                    <button className="p-2 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100">
+                    <button className="p-2 bg-pink-50 text-pink-600 rounded-lg hover:bg-pink-100">
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
@@ -209,20 +209,20 @@ export default function POSPage() {
           {/* OTC Products */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Shield className="w-5 h-5 mr-2 text-green-500" />
+              <Shield className="w-5 h-5 mr-2 text-purple-500" />
               OTC Products
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredOTC.map((product) => (
-                <div 
+                <div
                   key={product.id}
                   onClick={() => addToCart(product, 'otc')}
-                  className="bg-white p-4 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-md cursor-pointer transition-all"
+                  className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:border-purple-300 hover:shadow-md cursor-pointer transition-all"
                 >
                   <p className="font-medium text-gray-900 text-sm mb-2">{product.name}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-gray-900">${product.price.toFixed(2)}</span>
-                    <button className="p-1.5 bg-green-50 text-green-600 rounded-lg hover:bg-green-100">
+                    <button className="p-1.5 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100">
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
@@ -313,8 +313,8 @@ export default function POSPage() {
               <button
                 onClick={() => setPaymentMethod('card')}
                 className={`flex items-center justify-center space-x-2 p-3 rounded-lg border-2 transition-colors ${
-                  paymentMethod === 'card' 
-                    ? 'border-primary-500 bg-primary-50 text-primary-700' 
+                  paymentMethod === 'card'
+                    ? 'border-pink-500 bg-pink-50 text-pink-700'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
@@ -324,8 +324,8 @@ export default function POSPage() {
               <button
                 onClick={() => setPaymentMethod('cash')}
                 className={`flex items-center justify-center space-x-2 p-3 rounded-lg border-2 transition-colors ${
-                  paymentMethod === 'cash' 
-                    ? 'border-green-500 bg-green-50 text-green-700' 
+                  paymentMethod === 'cash'
+                    ? 'border-teal-500 bg-teal-50 text-teal-700'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
@@ -368,8 +368,8 @@ export default function POSPage() {
             </div>
             <div className="p-6">
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
+                <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-8 h-8 text-teal-600" />
                 </div>
                 <h4 className="text-2xl font-bold text-gray-900">Payment Successful</h4>
                 <p className="text-gray-500 mt-1">Transaction #TXN-{Date.now().toString(36).toUpperCase()}</p>
