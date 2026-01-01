@@ -267,4 +267,4 @@ This project is a portfolio demonstration. All rights reserved.
 
 ---
 
-*Built with ❤️ for Foundation Health PM Application*
+*Built with ❤️ for Foundation Health & Droxi Product Manager Application*
