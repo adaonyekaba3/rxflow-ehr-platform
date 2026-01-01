@@ -154,13 +154,15 @@ const mockMessages: InboxMessage[] = [
 
 // Priority Badge Component
 const PriorityBadge = ({ priority }: { priority: number }) => {
-  const config = {
+  const configMap: Record<number, { color: string; label: string; textColor: string; bgLight: string }> = {
     1: { color: 'bg-red-500', label: 'Urgent', textColor: 'text-red-700', bgLight: 'bg-red-100' },
     2: { color: 'bg-orange-500', label: 'High', textColor: 'text-orange-700', bgLight: 'bg-orange-100' },
     3: { color: 'bg-yellow-500', label: 'Standard', textColor: 'text-yellow-700', bgLight: 'bg-yellow-100' },
     4: { color: 'bg-blue-500', label: 'Low', textColor: 'text-blue-700', bgLight: 'bg-blue-100' },
     5: { color: 'bg-gray-400', label: 'FYI', textColor: 'text-gray-700', bgLight: 'bg-gray-100' }
-  }[priority]
+  }
+
+  const config = configMap[priority] || configMap[3]
 
   return (
     <div className="flex items-center space-x-2">
