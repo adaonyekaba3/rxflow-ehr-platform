@@ -53,99 +53,98 @@ export default function TenantDashboard() {
 
   return (
     <>
-          {/* Welcome */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900">Welcome back, {session?.user?.name?.split(' ')[0] || 'there'}!</h1>
-            <p className="text-gray-600">Here's what's happening with your pharmacy today.</p>
-          </div>
+      {/* Welcome */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">Welcome back, {session?.user?.name?.split(' ')[0] || 'there'}!</h1>
+        <p className="text-gray-600">Here's what's happening with your pharmacy today.</p>
+      </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card">
-                <div className="flex items-center justify-between">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {stats.map((stat, index) => (
+          <div key={index} className="stat-card">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">{stat.label}</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                <p className={`text-sm mt-1 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                  {stat.change} from yesterday
+                </p>
+              </div>
+              <div className={`p-3 ${stat.color} rounded-xl`}>
+                <stat.icon className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Recent Prescriptions */}
+        <div className="card">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Recent Prescriptions</h2>
+            <Link href="/tenant/prescriptions" className="text-sm text-primary-600 hover:text-primary-700 flex items-center">
+              View all <ChevronRight className="w-4 h-4 ml-1" />
+            </Link>
+          </div>
+          <div className="space-y-3">
+            {recentPrescriptions.map((rx) => (
+              <div key={rx.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="flex items-center space-x-3">
+                  <div className={`p-2 rounded-lg ${getStatusColor(rx.status)}`}>
+                    {getStatusIcon(rx.status)}
+                  </div>
                   <div>
-                    <p className="text-sm text-gray-500">{stat.label}</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                    <p className={`text-sm mt-1 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                      {stat.change} from yesterday
-                    </p>
+                    <p className="font-medium text-gray-900">{rx.patient}</p>
+                    <p className="text-sm text-gray-500">{rx.medication}</p>
                   </div>
-                  <div className={`p-3 ${stat.color} rounded-xl`}>
-                    <stat.icon className="w-6 h-6 text-white" />
-                  </div>
+                </div>
+                <div className="text-right">
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(rx.status)}`}>
+                    {rx.status.replace('-', ' ')}
+                  </span>
+                  <p className="text-xs text-gray-500 mt-1">{rx.time}</p>
                 </div>
               </div>
             ))}
           </div>
+        </div>
 
-          <div className="grid lg:grid-cols-2 gap-6">
-            {/* Recent Prescriptions */}
-            <div className="card">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Prescriptions</h2>
-                <Link href="/tenant/prescriptions" className="text-sm text-primary-600 hover:text-primary-700 flex items-center">
-                  View all <ChevronRight className="w-4 h-4 ml-1" />
-                </Link>
-              </div>
-              <div className="space-y-3">
-                {recentPrescriptions.map((rx) => (
-                  <div key={rx.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div className="flex items-center space-x-3">
-                      <div className={`p-2 rounded-lg ${getStatusColor(rx.status)}`}>
-                        {getStatusIcon(rx.status)}
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{rx.patient}</p>
-                        <p className="text-sm text-gray-500">{rx.medication}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(rx.status)}`}>
-                        {rx.status.replace('-', ' ')}
-                      </span>
-                      <p className="text-xs text-gray-500 mt-1">{rx.time}</p>
-                    </div>
+        {/* Prior Auth Queue */}
+        <div className="card">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Prior Auth Queue</h2>
+            <Link href="/tenant/prior-auth" className="text-sm text-primary-600 hover:text-primary-700 flex items-center">
+              View all <ChevronRight className="w-4 h-4 ml-1" />
+            </Link>
+          </div>
+          <div className="space-y-3">
+            {priorAuthQueue.map((pa) => (
+              <div key={pa.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-amber-100">
+                    <Zap className="w-4 h-4 text-amber-600" />
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Prior Auth Queue */}
-            <div className="card">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Prior Auth Queue</h2>
-                <Link href="/tenant/prior-auth" className="text-sm text-primary-600 hover:text-primary-700 flex items-center">
-                  View all <ChevronRight className="w-4 h-4 ml-1" />
-                </Link>
-              </div>
-              <div className="space-y-3">
-                {priorAuthQueue.map((pa) => (
-                  <div key={pa.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 rounded-lg bg-amber-100">
-                        <Zap className="w-4 h-4 text-amber-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{pa.patient}</p>
-                        <p className="text-sm text-gray-500">{pa.medication} • {pa.payer}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center space-x-2">
-                        <div className={`w-12 h-2 rounded-full ${pa.aiScore >= 80 ? 'bg-green-200' : 'bg-amber-200'}`}>
-                          <div className={`h-2 rounded-full ${pa.aiScore >= 80 ? 'bg-green-500' : 'bg-amber-500'}`} style={{ width: `${pa.aiScore}%` }}></div>
-                        </div>
-                        <span className={`text-sm font-medium ${pa.aiScore >= 80 ? 'text-green-600' : 'text-amber-600'}`}>{pa.aiScore}%</span>
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1">{pa.submitted}</p>
-                    </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{pa.patient}</p>
+                    <p className="text-sm text-gray-500">{pa.medication} • {pa.payer}</p>
                   </div>
-                ))}
+                </div>
+                <div className="text-right">
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-12 h-2 rounded-full ${pa.aiScore >= 80 ? 'bg-green-200' : 'bg-amber-200'}`}>
+                      <div className={`h-2 rounded-full ${pa.aiScore >= 80 ? 'bg-green-500' : 'bg-amber-500'}`} style={{ width: `${pa.aiScore}%` }}></div>
+                    </div>
+                    <span className={`text-sm font-medium ${pa.aiScore >= 80 ? 'text-green-600' : 'text-amber-600'}`}>{pa.aiScore}%</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">{pa.submitted}</p>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
+      </div>
     </>
   )
 }
