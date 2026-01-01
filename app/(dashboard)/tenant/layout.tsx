@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
 import {
   Pill, Bell, Search, Menu, Home, FileText, Users, Activity,
-  CreditCard, Settings, LogOut, BarChart3, Shield, Loader2
+  CreditCard, Settings, LogOut, BarChart3, Shield, Loader2, Inbox
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -29,6 +29,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
 
   const navigation = [
     { name: 'Dashboard', href: '/tenant', icon: Home },
+    { name: 'Inbox', href: '/tenant/inbox', icon: Inbox, badge: 12 },
     { name: 'Prescriptions', href: '/tenant/prescriptions', icon: Pill },
     { name: 'Prior Auth', href: '/tenant/prior-auth', icon: FileText },
     { name: 'Patients', href: '/tenant/patients', icon: Users },
@@ -57,19 +58,26 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
           {/* Navigation */}
           <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
             {navigation.map((item) => {
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href || pathname?.startsWith(item.href + '/')
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive
                       ? 'bg-pink-50 text-pink-700'
                       : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
-                  <item.icon className={`w-5 h-5 mr-3 ${isActive ? 'text-pink-600' : 'text-gray-400'}`} />
-                  {item.name}
+                  <div className="flex items-center">
+                    <item.icon className={`w-5 h-5 mr-3 ${isActive ? 'text-pink-600' : 'text-gray-400'}`} />
+                    {item.name}
+                  </div>
+                  {item.badge && item.badge > 0 && (
+                    <span className="ml-auto bg-pink-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
                 </Link>
               )
             })}
