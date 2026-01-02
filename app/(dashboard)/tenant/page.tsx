@@ -54,13 +54,13 @@ export default function TenantDashboard() {
   return (
     <>
       {/* Welcome */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Welcome back, {session?.user?.name?.split(' ')[0] || 'there'}!</h1>
-        <p className="text-gray-600">Here's what's happening with your pharmacy today.</p>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Welcome back, {session?.user?.name?.split(' ')[0] || 'there'}!</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">Here's what's happening with your pharmacy today.</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="stat-card">
             <div className="flex items-center justify-between">
@@ -88,23 +88,23 @@ export default function TenantDashboard() {
               View all <ChevronRight className="w-4 h-4 ml-1" />
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {recentPrescriptions.map((rx) => (
-              <div key={rx.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                <div className="flex items-center space-x-3">
-                  <div className={`p-2 rounded-lg ${getStatusColor(rx.status)}`}>
+              <div key={rx.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors gap-2 sm:gap-0">
+                <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+                  <div className={`p-1.5 sm:p-2 rounded-lg ${getStatusColor(rx.status)} flex-shrink-0`}>
                     {getStatusIcon(rx.status)}
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{rx.patient}</p>
-                    <p className="text-sm text-gray-500">{rx.medication}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm sm:text-base text-gray-900 truncate">{rx.patient}</p>
+                    <p className="text-xs sm:text-sm text-gray-500 truncate">{rx.medication}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(rx.status)}`}>
+                <div className="flex items-center justify-between sm:justify-end sm:text-right gap-2 sm:gap-0">
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(rx.status)} whitespace-nowrap`}>
                     {rx.status.replace('-', ' ')}
                   </span>
-                  <p className="text-xs text-gray-500 mt-1">{rx.time}</p>
+                  <p className="text-xs text-gray-500">{rx.time}</p>
                 </div>
               </div>
             ))}
@@ -119,26 +119,26 @@ export default function TenantDashboard() {
               View all <ChevronRight className="w-4 h-4 ml-1" />
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {priorAuthQueue.map((pa) => (
-              <div key={pa.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-amber-100">
-                    <Zap className="w-4 h-4 text-amber-600" />
+              <div key={pa.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors gap-2 sm:gap-0">
+                <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+                  <div className="p-1.5 sm:p-2 rounded-lg bg-amber-100 flex-shrink-0">
+                    <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-amber-600" />
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{pa.patient}</p>
-                    <p className="text-sm text-gray-500">{pa.medication} • {pa.payer}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm sm:text-base text-gray-900 truncate">{pa.patient}</p>
+                    <p className="text-xs sm:text-sm text-gray-500 truncate">{pa.medication} • {pa.payer}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-12 h-2 rounded-full ${pa.aiScore >= 80 ? 'bg-green-200' : 'bg-amber-200'}`}>
+                <div className="flex items-center justify-between sm:justify-end sm:text-right gap-2">
+                  <div className="flex items-center space-x-1.5 sm:space-x-2">
+                    <div className={`w-10 sm:w-12 h-2 rounded-full ${pa.aiScore >= 80 ? 'bg-green-200' : 'bg-amber-200'}`}>
                       <div className={`h-2 rounded-full ${pa.aiScore >= 80 ? 'bg-green-500' : 'bg-amber-500'}`} style={{ width: `${pa.aiScore}%` }}></div>
                     </div>
-                    <span className={`text-sm font-medium ${pa.aiScore >= 80 ? 'text-green-600' : 'text-amber-600'}`}>{pa.aiScore}%</span>
+                    <span className={`text-xs sm:text-sm font-medium ${pa.aiScore >= 80 ? 'text-green-600' : 'text-amber-600'} whitespace-nowrap`}>{pa.aiScore}%</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">{pa.submitted}</p>
+                  <p className="text-xs text-gray-500 whitespace-nowrap">{pa.submitted}</p>
                 </div>
               </div>
             ))}
