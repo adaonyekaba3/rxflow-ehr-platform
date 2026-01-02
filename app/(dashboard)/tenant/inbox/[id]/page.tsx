@@ -4,8 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import {
-  ArrowLeft, Mail, User, Calendar, Tag, AlertCircle, Sparkles,
-  Check, Edit, RefreshCw, Send, Phone, MessageSquare, FileText,
+  ArrowLeft, Mail, User, Calendar, Sparkles,
+  Check, Edit, RefreshCw, Send, Phone, FileText,
   CheckCircle, XCircle, Info
 } from 'lucide-react'
 import { cn } from '@/lib/utils'

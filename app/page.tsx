@@ -159,7 +159,7 @@ export default function HomePage() {
               <span className="text-white font-bold">RxFlow Intelligence</span>
             </div>
             <p className="text-sm">
-              Product Case Study by Ada Okonkwo | Built for Foundation Health PM Application
+              Product Case Study by Adaobi Onyekaba | Built for Foundation Health PM Application
             </p>
           </div>
         </div>

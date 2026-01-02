@@ -12,7 +12,7 @@
 
 RxFlow Intelligence is a comprehensive digital pharmacy platform that transforms prescription fulfillment by connecting fragmented healthcare infrastructure, automating prior authorizations with AI, and delivering exceptional patient experiences.
 
-**Product Case Study by Ada Okonkwo** | Built for Foundation Health PM Application
+**Product Case Study by Adaobi Onyekaba** | Built for Foundation Health PM Application
 
 ---
 

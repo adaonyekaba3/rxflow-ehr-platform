@@ -20,7 +20,7 @@ const tabs = [
 ]
 
 const teamMembers = [
-  { id: '1', name: 'Ada Okonkwo', email: 'ada@rxflow.com', role: 'ADMIN', status: 'active', avatar: 'AO' },
+  { id: '1', name: 'Adaobi Onyekaba', email: 'ada@rxflow.com', role: 'ADMIN', status: 'active', avatar: 'AO' },
   { id: '2', name: 'John Smith', email: 'john@rxflow.com', role: 'PHARMACIST', status: 'active', avatar: 'JS' },
   { id: '3', name: 'Maria Garcia', email: 'maria@rxflow.com', role: 'TECHNICIAN', status: 'active', avatar: 'MG' },
   { id: '4', name: 'David Chen', email: 'david@rxflow.com', role: 'STAFF', status: 'pending', avatar: 'DC' },
